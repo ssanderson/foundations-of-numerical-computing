@@ -1,0 +1,14 @@
+singleuser_docker_image: "jupyter/scipy-notebook:1af3089901bb"
+jupyterhub_source_directory: "/hub"
+jupyterhub_config: "{{ jupyterhub_source_directory }}/jupyterhub_config.py"
+jupyterhub_requirements: "{{ jupyterhub_source_directory }}/requirements.txt"
+jupyterhub_port: 443
+
+tutorial_root: "/tutorial/"
+tutorial_materials: "/tutorial/materials/"
+tutorial_workspace: "/tutorial/workspace/"
+
+jupyterhub_supervisor_config: /etc/supervisor/conf.d/jupyterhub.conf
+
+jupyterhub_ssl_key: "/etc/letsencrypt/live/{{ ssl_cert_domain }}/privkey.pem"
+jupyterhub_ssl_cert: "/etc/letsencrypt/live/{{ ssl_cert_domain }}/fullchain.pem"

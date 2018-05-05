@@ -1,0 +1,16 @@
+[program:jupyterhub]
+command=python3 -m jupyterhub -f {{ jupyterhub_config }} --ip 0.0.0.0 --port {{ jupyterhub_port }} --ssl-key {{ jupyterhub_ssl_key }} --ssl-cert {{ jupyterhub_ssl_cert }}
+user=root
+
+stdout_logfile=/var/log/jupyterhub.log
+stderr_logfile=/var/log/jupyterhub.log
+startretries=5
+autorestart=true
+startsecs=10
+stopasgroup=true
+stopwaitsecs=30
+killasgroup=true
+redirect_stderr=true
+stdout_logfile_maxbyutes=20MB
+stdout_logfile_backups=10
+stopsignal=INT

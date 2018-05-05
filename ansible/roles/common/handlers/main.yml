@@ -1,0 +1,8 @@
+---
+- name: start supervisord
+  service: name=supervisor state=started enabled=yes
+  become: true
+
+- name: start jupyterhub
+  supervisorctl: name=jupyterhub state=restarted
+  become: true
