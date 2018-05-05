@@ -1,5 +1,5 @@
 [program:jupyterhub]
-command=python3 -m jupyterhub -f {{ jupyterhub_config }} --ip 0.0.0.0 --port {{ jupyterhub_port }} --ssl-key {{ jupyterhub_ssl_key }} --ssl-cert {{ jupyterhub_ssl_cert }}
+command=python3 -m jupyterhub -f {{ jupyterhub_config }} --ip 0.0.0.0 --port {{ jupyterhub_port }} --ssl-key {{ jupyterhub_ssl_key }} --ssl-cert {{ jupyterhub_ssl_cert }} --log-level INFO
 user=root
 
 stdout_logfile=/var/log/jupyterhub.log

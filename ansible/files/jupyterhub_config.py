@@ -1,5 +1,8 @@
+from contextlib import closing
+from os import chmod
 from os.path import join as path_join, exists as path_exists
 import shutil
+import socket
 
 from jupyterhub.auth import Authenticator
 from traitlets import Any, Unicode
@@ -11,6 +14,12 @@ c = get_config()  # noqa
 
 # Grant admin users permission to access single-user servers.
 c.JupyterHub.admin_access = True
+
+
+def get_open_port(interface='localhost'):
+    with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
+        s.bind((interface, 0))
+        return s.getsockname()[1]
 
 
 # Class for authenticating users.
@@ -72,6 +81,10 @@ class TutorialSpawner(DockerSpawner):
     def _volumes_default(self):
         return {self.host_workspace: self.guest_workspace}
 
+    def _port_default(self):
+        # Use a new port because we're running on the host network.
+        return get_open_port()
+
     async def start(self, *args, **kwargs):
         """
         Create a new workspace for the user if one doesn't already exist, then
@@ -80,15 +93,21 @@ class TutorialSpawner(DockerSpawner):
         src = self.host_materials_root
         dest = self.host_workspace
         if not path_exists(dest):
+            self.log.critical("Copying %s to %s", src, dest)
             shutil.copytree(src, dest)
+
+        self.log.critical("Setting permissions on %s to ", dest)
+        chmod(dest, 0o777)
+
         return await super().start(*args, **kwargs)
 
 
 c.JupyterHub.spawner_class = TutorialSpawner
 # NOTE: This needs to the singleuser_docker_image ansible variable
-c.TutorialSpawner.container_image = 'jupyter/scipy-notebook:1af3089901bb'
+c.TutorialSpawner.container_image = 'foundations-of-numerical-computing:latest'
 c.TutorialSpawner.network_name = 'host'
 c.TutorialSpawner.use_internal_ip = True
+c.TutorialSpawner.remove_containers = True
 
 # url for the database. e.g. `sqlite:///jupyterhub.sqlite`
 c.JupyterHub.db_url = 'sqlite:///:memory:'

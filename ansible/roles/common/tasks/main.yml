@@ -20,6 +20,7 @@
     - python3-venv
     - supervisor
     - certbot
+    - emacs24
   become: yes
 
 - name: Install foo
@@ -65,7 +66,7 @@
   file:
     path: "{{ tutorial_root }}"
     state: directory
-    mode: "u=rwx,g=rx,o=rx"
+    mode: "u=rwx,g=rwx,o=rwx"
   become: yes
 
 - name: Create workspace directory
@@ -78,19 +79,18 @@
   become: yes
 
 - name: Copy tutorial materials.
-  tags: materials2
+  tags: materials
   copy:
     src: "{{ item }}"
     dest: "{{ tutorial_materials }}"
-    # Materials are read-only
-    mode: "u=r,g=r,o=r"
+    mode: "u=rwx,g=rwx,o=rwx"
   with_fileglob:
     - "files/materials/*"
   become: yes
 
 - name: Install Python Packages
   tags: hub
-  shell: python3 -m pip install -r ~/requirements.txt
+  shell: python3 -m pip install -r {{ jupyterhub_requirements }}
   become: yes
 
 - name: Create Hub Service
@@ -105,12 +105,36 @@
   become: yes
   notify: start supervisord
 
-- name: Pull Docker Image
-  tags: docker
+- name: Create Docker Build Directory
+  tags:
+    - docker
+    - docker-build
+  file:
+    path: /build
+    state: directory
+    owner: root
+    mode: 744
+  become: yes
+
+- name: Create Dockerfile
+  tags:
+    - docker
+    - docker-build
+  template:
+    src: Dockerfile.j2
+    dest: /build/Dockerfile
+    owner: root
+    mode: 600
+  become: yes
+
+- name: Build Docker Image
+  tags:
+    - docker
+    - docker-build
   docker_image:
+    path: /build
     name: "{{ singleuser_docker_image }}"
   become: yes
-  become_user: jupyterhub
 
 - name: Start SupervisorD
   command: /bin/true
