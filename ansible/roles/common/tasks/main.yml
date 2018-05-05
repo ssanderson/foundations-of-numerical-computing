@@ -1,0 +1,91 @@
+---
+- name: Add CertBot APT Repository
+  tags: apt
+  apt_repository:
+    repo: "ppa:certbot/certbot"
+    state: present
+  become: yes
+
+- name: Install APT Dependencies
+  tags: apt
+  apt: name={{ item }} update_cache=yes state=present
+  with_items:
+    - git
+    - libffi-dev
+    - libssl-dev
+    - nodejs-legacy
+    - npm
+    - python3-dev
+    - python3-pip
+    - python3-venv
+    - supervisor
+    - certbot
+  become: yes
+
+- name: Install foo
+  tags: npm
+  npm:
+    global: yes
+    production: yes
+    name: "configurable-http-proxy"
+    version: 2.0.4
+  become: yes
+
+- name: Create LetsEncrypt Certificate
+  tags: cert
+  shell: |
+    certbot certonly --standalone -m {{ ssl_cert_email }} -d {{ ssl_cert_domain }} --agree-tos -n
+  become: yes
+
+- name: Create JupyterHub User
+  tags: hub
+  user:
+    name: jupyterhub
+    groups:
+      - docker
+    append: yes
+  become: yes
+
+- name: Create JupyterHub src directory.
+  tags: hub
+  file:
+    path: ~/src
+    state: directory
+    mode: "u=rwx,g=r,o=r"
+  become: yes
+  become_user: jupyterhub
+
+- name: Copy jupyterhub_config.py.
+  tags: hub
+  copy:
+    src: files/jupyterhub_config.py
+    dest: ~/src/jupyterhub_config.py
+  become: yes
+  become_user: jupyterhub
+
+- name: Copy requirements.txt.
+  tags: hub
+  copy:
+    src: files/requirements.txt
+    dest: ~/requirements.txt
+  become: yes
+  become_user: root
+
+- name: Install Python Packages
+  tags: hub
+  shell: python3 -m pip install -r ~/requirements.txt
+  become: yes
+
+# - name: Create Hub Service
+#   tags: hub
+
+- name: Pull Docker Image
+  tags: docker
+  docker_image:
+    name: jupyter/scipy-notebook:1af3089901bb
+  become: yes
+  become_user: jupyterhub
+
+- name: Start SupervisorD
+  service: name=supervisor state=started enabled=yes
+  become: yes

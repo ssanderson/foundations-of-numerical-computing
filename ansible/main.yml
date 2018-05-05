@@ -1,15 +1,10 @@
 ---
-
 - hosts: hubs
   tags: docker
   name: Install Docker
   roles:
     - geerlingguy.docker
   become: yes
-
-- hosts: hubs
-  roles:
-    - common
 
 - hosts: hubs
   vars_prompt:
@@ -21,4 +16,5 @@
       prompt: "Domain Name for LetsEncrypts SSL Cert?"
       private: no
       confirm: yes
-  tasks:
+  roles:
+    - common
