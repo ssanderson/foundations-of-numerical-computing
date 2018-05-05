@@ -37,55 +37,87 @@
     certbot certonly --standalone -m {{ ssl_cert_email }} -d {{ ssl_cert_domain }} --agree-tos -n
   become: yes
 
-- name: Create JupyterHub User
-  tags: hub
-  user:
-    name: jupyterhub
-    groups:
-      - docker
-    append: yes
-  become: yes
-
 - name: Create JupyterHub src directory.
   tags: hub
   file:
-    path: ~/src
+    path: "{{ jupyterhub_source_directory }}"
     state: directory
     mode: "u=rwx,g=r,o=r"
   become: yes
-  become_user: jupyterhub
 
 - name: Copy jupyterhub_config.py.
   tags: hub
   copy:
     src: files/jupyterhub_config.py
-    dest: ~/src/jupyterhub_config.py
+    dest: "{{ jupyterhub_config }}"
   become: yes
-  become_user: jupyterhub
 
 - name: Copy requirements.txt.
   tags: hub
   copy:
     src: files/requirements.txt
-    dest: ~/requirements.txt
+    dest: "{{ jupyterhub_requirements }}"
   become: yes
   become_user: root
+
+- name: Create tutorial directory.
+  tags: materials
+  file:
+    path: "{{ tutorial_root }}"
+    state: directory
+    mode: "u=rwx,g=rx,o=rx"
+  become: yes
+
+- name: Create workspace directory
+  tags: materials
+  file:
+    path: "{{ tutorial_workspace }}"
+    state: directory
+    # Anyone can write in the workspace.
+    mode: "u=rwx,g=rwx,o=rwx"
+  become: yes
+
+- name: Copy tutorial materials.
+  tags: materials2
+  copy:
+    src: "{{ item }}"
+    dest: "{{ tutorial_materials }}"
+    # Materials are read-only
+    mode: "u=r,g=r,o=r"
+  with_fileglob:
+    - "files/materials/*"
+  become: yes
 
 - name: Install Python Packages
   tags: hub
   shell: python3 -m pip install -r ~/requirements.txt
   become: yes
 
-# - name: Create Hub Service
-#   tags: hub
+- name: Create Hub Service
+  tags:
+    - hub
+    - supervisor
+  template:
+    src: supervisor.conf.j2
+    dest: "{{ jupyterhub_supervisor_config }}"
+    owner: root
+    mode: 640
+  become: yes
+  notify: start supervisord
 
 - name: Pull Docker Image
   tags: docker
   docker_image:
-    name: jupyter/scipy-notebook:1af3089901bb
+    name: "{{ singleuser_docker_image }}"
   become: yes
   become_user: jupyterhub
 
 - name: Start SupervisorD
-  service: name=supervisor state=started enabled=yes
-  become: yes
+  command: /bin/true
+  notify: start supervisord
+  tags: restart
+
+- name: Start JupyterHub
+  command: /bin/true
+  notify: start jupyterhub
+  tags: restart
