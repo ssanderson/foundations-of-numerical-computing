@@ -88,6 +88,16 @@
     - "files/materials/*"
   become: yes
 
+- name: Copy tutorial materials images.
+  tags: materials
+  copy:
+    src: "{{ item }}"
+    dest: "{{ tutorial_materials }}/images/"
+    mode: "u=rwx,g=rwx,o=rwx"
+  with_fileglob:
+    - "files/materials/images/*"
+  become: yes
+
 - name: Install Python Packages
   tags: hub
   shell: python3 -m pip install -r {{ jupyterhub_requirements }}
@@ -127,6 +137,16 @@
     mode: 600
   become: yes
 
+- name: Copy docker requirements.
+  tags:
+    - docker
+    - docker-build
+  copy:
+    src: container_requirements.txt
+    dest: /build/requirements.txt
+    mode: "u=rw,g=r,o=r"
+  become: yes
+
 - name: Build Docker Image
   tags:
     - docker
@@ -134,6 +154,7 @@
   docker_image:
     path: /build
     name: "{{ singleuser_docker_image }}"
+    force: yes
   become: yes
 
 - name: Start SupervisorD

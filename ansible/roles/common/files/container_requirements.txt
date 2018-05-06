@@ -1,0 +1,2 @@
+rise==5.2.0
+fortran-magic==0.7.0

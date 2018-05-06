@@ -96,7 +96,7 @@ Numpy solves the performance problems listed above by:
 
 Nothing in life is free. Numpy allows us to speed up computations on large
 arrays by performing one moderately complex dispatch **per array** instead of a
-cheap dispatch **per array element**. Since the single numpy  dispatch is more
+cheap dispatch **per array element**. Since the single numpy dispatch is more
 complex, we might expect that numpy is still slower for very small
 arrays. Using the ``%%timeit`` builtin, can you figure out how many data points
 you need to have for a numpy dot product to be faster than a pure-python
@@ -175,7 +175,7 @@ algorithms in terms of their associated binary operator.
 
 ### Exercises: (10 minutes (65/180))
 
-- Write a function that shows that takes an array of any shape and calculates
+- Write a function that takes an array of any shape and calculates
   `sin(x) ** 2 + cos(x) ** 2` for each element of the array.
 - Write a function that takes a 2D array and returns a 1D array containing the
   sum of each column.

@@ -1,5 +1,5 @@
 from contextlib import closing
-from os import chmod
+from os import chmod, environ
 from os.path import join as path_join, exists as path_exists
 import shutil
 import socket
@@ -28,10 +28,14 @@ class TutorialAuthenticator(Authenticator):
     An authenticator that uses the same password for all students, plus an
     instructor password.
     """
-    student_password = Unicode(default_value="pass")
+    student_password = Unicode(
+        default_value=environ.get('TUTORIAL_USER_PASSWORD', "pass"),
+    )
     student_password_hash = Any()
 
-    admin_password = Unicode(default_value="admin-pass")
+    admin_password = Unicode(
+        default_value=environ.get('TUTORIAL_ADMIN_USER_PASSWORD', 'admin-pass')
+    )
     admin_password_hash = Any()
 
     def _student_password_hash_default(self):
