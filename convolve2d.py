@@ -1,4 +1,6 @@
-"""This file provides a simple implementation of scipy.signal.convolve2d with mode
+"""
+This file provides a simple implementation of scipy.signal.convolve2d with
+mode='valid'.
 """
 import numpy as np
 from numpy.lib.stride_tricks import as_strided
