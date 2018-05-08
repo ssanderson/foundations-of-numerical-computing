@@ -97,10 +97,10 @@ class TutorialSpawner(DockerSpawner):
         src = self.host_materials_root
         dest = self.host_workspace
         if not path_exists(dest):
-            self.log.critical("Copying %s to %s", src, dest)
+            self.log.info("Copying %s to %s", src, dest)
             shutil.copytree(src, dest)
 
-        self.log.critical("Setting permissions on %s to ", dest)
+        self.log.info("Setting permissions on %s to read-write-execute.", dest)
         chmod(dest, 0o777)
 
         return await super().start(*args, **kwargs)
