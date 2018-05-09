@@ -76,7 +76,7 @@ class TutorialSpawner(DockerSpawner):
     """
     host_materials_root = Unicode(default_value="/tutorial/materials")
     host_workspace_root = Unicode(default_value="/tutorial/workspace")
-    guest_workspace = Unicode(default_value="/home/jovyan/tutorial")
+    guest_workspace = Unicode(default_value="/home/jovyan")
 
     @property
     def host_workspace(self):
