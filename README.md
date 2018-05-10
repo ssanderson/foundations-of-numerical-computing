@@ -23,21 +23,22 @@ The materials in this repository are organized as follows:
 
 - [Creating and Reshaping
   Arrays](https://github.com/ssanderson/foundations-of-numerical-computing/blob/master/ansible/files/materials/2-Creating%20and%20Reshaping%20Arrays.ipynb)
-  contains exercises that teach students how to create and reshape arrays in a variety of ways.
+  contains exercises that teach students how to create and reshape arrays.
 
 - [Universal Functions](https://github.com/ssanderson/foundations-of-numerical-computing/blob/master/ansible/files/materials/3-Universal%20Functions.ipynb)
   contains exercises that teach students how to use Numpy's universal functions.
 
 - [Selections](https://github.com/ssanderson/foundations-of-numerical-computing/blob/master/ansible/files/materials/4-Selections.ipynb)
-  contains exercises that teach students how to use the ndarray `[]` to select
-  data out of numpy arrays.
+  contains exercises that teach students how to use the ndarray `[]` operator
+  to select data.
 
 - [Reductions](https://github.com/ssanderson/foundations-of-numerical-computing/blob/master/ansible/files/materials/5-Reductions.ipynb)
   contains exercises that teach students how to apply reduction functions like
-  `min`, `max`, and `min` across axes of arrays.
+  `min`, `max`, and `min` across arrays.
 
 - [Broadcasting](https://github.com/ssanderson/foundations-of-numerical-computing/blob/master/ansible/files/materials/6-Broadcasting.ipynb)
   contains exercises that teach students how to use broadcasting in conjunction
-  with.
+  with the other techniques shown during the tutorial.
 
-Each notebook also has a (Solutions) notebook next to it that contains worked solutions for each of the exercises.
+Each notebook also has an associated (Solutions) notebook that contains worked
+solutions for each of the exercises.
