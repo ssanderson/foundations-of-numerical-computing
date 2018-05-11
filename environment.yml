@@ -6,8 +6,6 @@ dependencies:
   - backcall=0.1.0=py_0
   - blas=1.1=openblas
   - bleach=2.1.3=py_0
-  - ca-certificates=2018.4.16=0
-  - certifi=2018.4.16=py36_0
   - decorator=4.3.0=py_0
   - entrypoints=0.2.3=py36_1
   - fortran-magic=0.7=py36_1
@@ -26,11 +24,9 @@ dependencies:
   - mistune=0.8.3=py36_1
   - nbconvert=5.3.1=py_1
   - nbformat=4.4.0=py36_0
-  - ncurses=5.9=10
   - notebook=5.5.0=py36_0
   - numpy=1.14.3=py36_blas_openblas_200
   - openblas=0.2.20=7
-  - openssl=1.0.2o=0
   - pandas=0.22.0=py36_1
   - pandoc=2.2=0
   - pandocfilters=1.4.2=py36_0
@@ -41,17 +37,14 @@ dependencies:
   - prompt_toolkit=1.0.15=py36_0
   - ptyprocess=0.5.2=py36_0
   - pygments=2.2.0=py36_0
-  - python=3.6.5=1
   - python-dateutil=2.7.2=py_0
   - pytz=2018.4=py_0
   - pyzmq=17.0.0=py36_4
-  - readline=7.0=0
   - scipy=1.1.0=py36_blas_openblas_200
   - send2trash=1.5.0=py_0
   - setuptools=39.1.0=py36_0
   - simplegeneric=0.8.1=py36_0
   - six=1.11.0=py36_1
-  - sqlite=3.20.1=2
   - terminado=0.8.1=py36_0
   - testpath=0.3.1=py36_0
   - tk=8.6.7=0
@@ -63,6 +56,37 @@ dependencies:
   - xz=5.2.3=0
   - zeromq=4.2.5=1
   - zlib=1.2.11=0
+  - ca-certificates=2018.03.07=0
+  - certifi=2018.4.16=py36_0
+  - cycler=0.10.0=py36h93f1223_0
+  - dbus=1.13.2=h714fa37_1
+  - expat=2.2.5=he0dffb1_0
+  - fontconfig=2.12.6=h49f89f6_0
+  - freetype=2.8=hab7d2ae_1
+  - glib=2.56.1=h000015b_0
+  - gst-plugins-base=1.14.0=hbbd80ab_1
+  - gstreamer=1.14.0=hb453b48_1
+  - icu=58.2=h9c2bf20_1
+  - jpeg=9b=h024ee3a_2
+  - kiwisolver=1.0.1=py36h764f252_0
+  - libedit=3.1.20170329=h6b74fdf_2
+  - libffi=3.2.1=hd88cf55_4
+  - libgcc-ng=7.2.0=hdf63c60_3
   - libgfortran=3.0.0=1
+  - libpng=1.6.34=hb9fc6fc_0
+  - libstdcxx-ng=7.2.0=hdf63c60_3
+  - libxcb=1.13=h1bed415_1
+  - libxml2=2.9.8=hf84eae3_0
+  - matplotlib=2.2.2=py36h0e671d2_1
+  - ncurses=6.1=hf484d3e_0
+  - openssl=1.0.2o=h20670df_0
+  - pcre=8.42=h439df22_0
+  - pyparsing=2.2.0=py36hee85983_1
+  - pyqt=5.9.2=py36h751905a_0
+  - python=3.6.5=hc3d631a_2
+  - qt=5.9.5=h7e424d6_0
+  - readline=7.0=ha6073c6_4
+  - sip=4.19.8=py36hf484d3e_0
+  - sqlite=3.23.1=he433501_0
 prefix: /home/ssanderson/miniconda3/envs/fonc2
 
