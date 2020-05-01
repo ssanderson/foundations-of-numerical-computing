@@ -1,17 +1,16 @@
-## Title/About Me (1 minute (1/180))
-## Outline (2 minutes (3/180))
-## Environment Setup (7 minutes (10/180))
+## Title/About Me (1 minute (8/180))
+## Outline (2 minutes (10/180))
 
-My plan for providing an environment in this talk is to set up a
-[JupyterHub](https://github.com/jupyterhub/jupyterhub) instance that provides a
-Docker container for each student with an up-to-date scientific python
-installation. This will hopefully avoid the often-painful process of setting up
-a scientific python environment on users' laptops; each user will just need to
-be able to access a public URL on the internet.
+## Warm Up Exercise: Finding Functions and Documentation in Jupyter (10 minutes (13/180))
 
-In the event that internet fails during the tutorial, my backup plan will be to
-go through the exercises together on my presentation laptop, taking volunteers
-from the audience to implement solutions.
+This exercise teaches students the basics of the Jupyter interface (e.g.,
+creating cells, executing cells, tab completion), and teaches them to use
+`numpy.lookfor` to look up documentation about specific topics.
+
+The main purpose of this exercise is to ensure that students are comfortable
+with Jupyter and that their environments are functioning properly.
+
+[Notebook](https://github.com/ssanderson/foundations-of-numerical-computing/blob/master/ansible/files/materials/1-Finding%20Functions%20and%20Documentation%20in%20Jupyter.ipynb)
 
 ## Section 1: Why Do We Need Numpy?
 
@@ -22,7 +21,7 @@ The goal of this section is for students to develop an intuition for why
 Python's built-in data structures are inefficient for large-scale numerical
 computing.
 
-### Review of Python Lists (4 minutes (14/180)
+### Review of Python Lists (5 minutes (18/180)
 
 The goal of this section is to briefly review Python lists. This review will
 serve as a point of comparison when we introduce numpy arrays in subsequent
@@ -40,7 +39,7 @@ a list), which we'll give up with numpy in exchange for better performance.
 - Efficiently size-mutable (unlike numpy).
 - Can hold objects of different types (unlike numpy).
 
-### Profiling Numerical Algorithms with Python Lists (6 minutes (20/180))
+### Profiling Numerical Algorithms with Python Lists (5 minutes (23/180))
 
 The goal of this section is to show that numerical algorithms are unacceptably
 slow when implemented using python's built-in lists and integers.
@@ -52,7 +51,7 @@ alternative implementation in Fortran using f2py (via the Jupyter Notebook's
 ``%%fortran`` magic), and we learn that Python's performance for this task is
 several orders of magnitude worse than the native fortran implementation.
 
-### Why is the Python Version so Slow? (5 minutes (25/180))
+### Why is the Python Version so Slow? (5 minutes (28/180))
 
 In this section, we explain why the Python code we showed in the previous
 section is so much slower than the native fortran code.
@@ -70,7 +69,7 @@ dynamic dispatch on each element. Similarly, if we want to perform the same
 operation in every iteration of a loop, then bytecode interpretation is
 unnecessary.
 
-### How Numpy Makes Numerical Algorithms Fast (5 minutes (30/180))
+### How Numpy Makes Numerical Algorithms Fast (5 minutes (33/180))
 
 In this section, we explain how numpy allows us to fix the performance problems
 observed in the previous section by giving up some flexibility in how it allows
@@ -89,31 +88,9 @@ Numpy solves the performance problems listed above by:
   ints.
 - Illustrate (2) by showing that `ndarray` overloads binary operators like `+`
   and `*` to perform element-wise operations.
-- Show that matrix multiplication using numpy array is competitive with
-  Fortran.
+- Show that dot product using numpy array is competitive with Fortran.
 
-### Exercise: How Much Data Do You Need for Numpy Dot Product to Be Faster? (5 minutes (35/180))
-
-Nothing in life is free. Numpy allows us to speed up computations on large
-arrays by performing one moderately complex dispatch **per array** instead of a
-cheap dispatch **per array element**. Since the single numpy dispatch is more
-complex, we might expect that numpy is still slower for very small
-arrays. Using the ``%%timeit`` builtin, can you figure out how many data points
-you need to have for a numpy dot product to be faster than a pure-python
-implementation.
-
-Example Test:
-```
-In [9]: a = np.array([1, 2, 3]); b = np.array([2, 3, 4])
-In [10]: %timeit (a * b).sum()
-1000000 loops, best of 3: 1.33 µs per loop
-
-In [11]: a = [1, 2, 3]; b = [2, 3, 4]
-In [12]: %timeit sum(x * y for x, y in zip(a, b))
-1000000 loops, best of 3: 531 ns per loop
-```
-
-## Section 2: Core Numpy Operations
+## Section 2: Numpy Toolbox
 
 In this section, we show core features and numpy idioms that should form users'
 primary day-to-day toolbox. This section is the core content of the tutorial.
@@ -123,7 +100,7 @@ The main goals of this section are:
 1. Provide an overview of important numpy features and concepts.
 2. Provide a set of examples of solving problems by "thinking with arrays".
 
-### Creating Arrays (5 minutes (40/180))
+### Creating Arrays (5 minutes (38/180))
 
 [Reference](https://docs.scipy.org/doc/numpy-1.13.0/reference/routines.array-creation.html)
 
@@ -142,15 +119,19 @@ built-in ways to create arrays.
 - `np.load`/`np.save`
 - `np.loadtxt`/`pandas.read_csv`
 
-### Exercises: (5 minutes (45/180))
+### Reshaping Arrays (2 minutes (40/180))
 
-- Create 5 x 5 array containing only only the number zero. (`np.zeroes((5, 5))`)
-- Create 3 x 3 x 3 array containing only only the number one.  (`np.ones((3, 3, 3))`)
-- Create a 10 x 10 array containing values from 1 to 10 on the diagonal. (`np.diag(np.arange(1, 11))`)
-- Save one of the above arrays to disk. Load it back from disk.
-- Create a 100 x 100 array containing samples from a standard normal distribution. (`np.RandomState.normal`)
+Now that we know how to create arrays, it's useful to know how to change
+arrays' shape. In this section, we introduce the `.reshape` and `.transpose`
+methods, which are commonly used to change arrays' shapes.
 
-### UFuncs (10 minutes (55/180))
+### Exercises: Creating and Reshaping Arrays (10 minutes (50/180))
+
+[Notebook](https://github.com/ssanderson/foundations-of-numerical-computing/blob/master/ansible/files/materials/2-Creating%20and%20Reshaping%20Arrays.ipynb)
+
+### Break: (10 minutes (60/180))
+
+### UFuncs (10 minutes (70/180))
 
 [Reference](https://docs.scipy.org/doc/numpy-1.13.0/reference/ufuncs.html)
 
@@ -173,82 +154,11 @@ algorithms in terms of their associated binary operator.
   seen this used in the wild. We're not going to spend time on it.
 - `ufunc.at`: Also never seen this used.
 
-### Exercises: (10 minutes (65/180))
+#### Exercises: UFuncs (10 minutes (80/180))
 
-- Write a function that takes an array of any shape and calculates
-  `sin(x) ** 2 + cos(x) ** 2` for each element of the array.
-- Write a function that takes a 2D array and returns a 1D array containing the
-  sum of each column.
-- Write a function that takes a 2D array and returns a 1D array containing the
-  sum of each row.
-- Implement `np.cumprod` in terms of `np.multiply`.
+[Notebook](https://github.com/ssanderson/foundations-of-numerical-computing/blob/master/ansible/files/materials/3-Universal%20Functions.ipynb)
 
-### Broadcasting (15 minutes (80/180))
-
-[Reference](https://docs.scipy.org/doc/numpy-1.13.0/user/basics.broadcasting.html)
-
-So far, we've only seen operations on arrays that have exactly the same shape,
-but one of the most powerful tools in numpy is its ability to combine arrays of
-different dimensions. This technique is called "broadcasting". Broadcasting
-allows us to apply operations on two arrays of unequal shape as long as the
-arrays' shapes are "compatible".
-
-Examples:
-
-- `array + scalar`
-- `array2d - array2d.mean(axis=0)`
-- `array2d - array2d.mean(axis=1)`
-- `(n x 1)` + `(1 x m)` -> `n x m`
-- `(n,)` + `(m x 1)` -> `n x m`
-
-The general intuition for "compatible" is that two arrays are compatible if
-they can be converted to the same shape by replicating themselves along missing
-axes.
-
-- Talk about the broadcasting algorithm.
-- Show `np.newaxis` for adding "synthetic" dimensions to arrays.
-- Show that all multi-input ufuncs broadcast their operands before running.
-
-### Exercises (10 minutes (90/180)
-
-- Write a function that computes the shape of the output of two arrays when
-  broadcasted together.
-
-- Write a function that takes an array of interval start dates, an equal-length
-  array of interval stop dates, and an array of output dates, and return a
-  2D-boolean array with a column for each start/stop pair and a row for each
-  output date. Example:
-
-```
-In [86]: starts
-Out[86]: array(['2015-01-02', '2015-01-05', '2015-01-06'], dtype='datetime64[D]')
-
-In [87]: stops
-Out[87]: array(['2015-01-04', '2015-01-06', '2015-01-09'], dtype='datetime64[D]')
-
-In [88]: out_dates
-Out[88]:
-array(['2015-01-02', '2015-01-03', '2015-01-04', '2015-01-05',
-       '2015-01-06', '2015-01-07', '2015-01-08', '2015-01-09'], dtype='datetime64[D]')
-
-In [89]: my_func(starts, stops, out_dates)
-Out[89]:
-array([[ True, False, False],
-       [ True, False, False],
-       [ True, False, False],
-       [False,  True, False],
-       [False,  True,  True],
-       [False, False,  True],
-       [False, False,  True],
-       [False, False,  True]], dtype=bool)
-```
-
-(this is an example of a real problem I've encountered for which broadcasting
-enables an elegant 1-line solution.)
-
-### Break (10 minutes (100/180)
-
-### Slicing and Selection (15 minutes (115/180))
+### Slicing and Selection (10 minutes (90/180))
 
 [Reference](https://docs.scipy.org/doc/numpy-1.13.0/user/basics.indexing.html#indexing)
 
@@ -265,7 +175,8 @@ All the intuitions we have from `list` carry over straightforwardly.
 
 One important difference is that slicing from an array doesn't make a copy; the
 underlying data is still shared. This can be a powerful tool for saving memory
-and CPU, but it can also bite you if you're not careful.
+and CPU, but it can also bite you if you're not careful. We show examples of
+surprising behavior due to numpy's view semantics.
 
 Slicing also generalizes to multiple dimensions in the way you'd expect.
 
@@ -289,30 +200,58 @@ Masking is most often used for filtering expressions like `a[a > 5]` or
 `a[(a > 3) & (a < 5)]` (note the parentheses here; they're necessary because of
 the relative precedence of `&` and `<`).
 
-### Exercises (15 minutes (130/180))
+#### Exercises: Slicing and Selection (10 minutes (100/180))
 
-- Write a function that takes a 2d array and selects the 2x2 array from its top-left corner.
-- Write the same function, but select the bottom-right corner.
-- Write a function that takes an array and returns an array containing all the
-  values less than 3.
-- Write a function that takes a 2d array and selects all the columns for which
-  the mean is less than the median.
-- Write a function that takes a "table" as a dictionary of 1d arrays and sorts
-  all of the columns of the table by a single column (Hint: Use argsort.)
+[Notebook](https://github.com/ssanderson/foundations-of-numerical-computing/blob/master/ansible/files/materials/4-Selections.ipynb)
 
-### Reshaping (3 minutes (133/180))
+### Reductions (5 minutes (105/180))
 
-- `np.reshape`
-- `np.transpose`
-- `np.ravel`
+Many common operations on numpy arrays are "reductions". These operations take
+an N-dimensional array and reduce it to a lower-dimensional array by
+aggregating the values of the array across one or more axes. For example
+`np.sum` takes an array and computes the sum of the array across one or more
+axes, resulting in a lower-dimensional array.
 
-### Concatenation (3 minutes (136/180))
+In this section, we introduce the concept of reductions, and show examples of
+common reductions such as `sum`, `mean`, and `median`.
 
-- `np.hstack`
-- `np.vstack`
-- `np.concatenate`
+#### Exercises: Reductions (10 minutes (115/180))
 
-### Review (9 minutes (145/180))
+[Notebook](https://github.com/ssanderson/foundations-of-numerical-computing/blob/master/ansible/files/materials/5-Reductions.ipynb)
+
+### Break (10 minutes (125/180)
+
+### Broadcasting (15 minutes (140/180))
+
+[Reference](https://docs.scipy.org/doc/numpy-1.13.0/user/basics.broadcasting.html)
+
+So far, we've only seen operations on arrays that have exactly the same shape,
+but one of the most powerful tools in numpy is its ability to combine arrays of
+different dimensions. This technique is called "broadcasting". Broadcasting
+allows us to apply operations on two arrays of unequal shape as long as the
+arrays' shapes are "compatible".
+
+Examples:
+
+- `array + scalar`
+- `array2d - array2d.mean(axis=0)`
+- `array2d - array2d.mean(axis=1)`
+- `(n x 1)` + `(1 x m)` -> `n x m`
+- `(n,)` + `(m x 1)` -> `n x m`
+
+The general intuition for "compatible" is that two arrays are compatible if
+they can be converted to the same shape by replicating themselves along missing
+axes.
+
+#### Exercises: Broadcasting (15 minutes (155/180)
+
+NOTE: The broadcasting exercises bring together skills learned in all the
+previous sections to solve a more complex, real-world problem, so we spend more
+time in the exercises here than in previous sections.
+
+[Notebook](https://github.com/ssanderson/foundations-of-numerical-computing/blob/master/ansible/files/materials/6-Broadcasting.ipynb)
+
+### Review (5 minutes (160/180))
 
 The purpose of this section is to reinforce the material we covered in the
 preceding sections and to emphasize the ways in which the different features of
@@ -322,9 +261,6 @@ numpy complement one another.
 - UFuncs
 - Broadcasting
 - Slicing and Selection
-
-- Show 1-2 examples of real-world problems solved using a combination of numpy
-  features.
 
 ## Section 3: Peeking Under the Hood
 
@@ -340,7 +276,9 @@ operations. In particular, seeing how arrays are implemented is important for
 understanding what operations create copies vs. what operations just create
 views.
 
-### What's in an Array? (7 minutes (152/180))
+It's OK if some portion of this section gets cut for time.
+
+### What's in an Array? (7 minutes (167/180))
 
 An array consists of the following information:
 
@@ -352,7 +290,7 @@ An array consists of the following information:
 - Shape: Tuple describing the number and length of the dimensions of the array.
 - Strides: Tuple describing how to get to an element at a particular coordinate.
 
-### Slice and Stride Tricks (13 minutes (165/180))
+### Slice and Stride Tricks (8 minutes (75/180))
 
 Of these attributes, `strides` is the most interesting. If the array has
 strides `(x, y, z)`, then that means that the array element at index `(i, j,
@@ -456,29 +394,7 @@ array([[100,   1,   2,   3,   4,   5,   6,   7,   8,   9],
        [100,   1,   2,   3,   4,   5,   6,   7,   8,   9]])
 ```
 
-### Exercise: (5 minutes (170/180))
-
-- Use `as_strided` to write a function that takes a 1-d array and returns a 2-D
-  array with three columns, where each row is a length-3 slice of the input
-  array.
-
-```
-In [168]: data
-Out[168]: array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-
-In [169]: as_strided(data, (8, 3), (8, 8))
-Out[169]:
-array([[0, 1, 2],
-       [1, 2, 3],
-       [2, 3, 4],
-       [3, 4, 5],
-       [4, 5, 6],
-       [5, 6, 7],
-       [6, 7, 8],
-       [7, 8, 9]])
-```
-
-### Conclusion: Review and Next Steps (10 minutes (180/180))
+### Conclusion: Review and Next Steps (5 minutes (180/180))
 
 **Key Takeaways:**
 
@@ -507,7 +423,8 @@ array([[0, 1, 2],
 - [`matplotlib`](https://matplotlib.org/) provides high-quality plotting
   routines using numpy arrays as its primary data format.
 
-- [`scikit-learn`](http://scikit-learn.org/stable/) provides machiner learning
+- [`scikit-learn`](http://scikit-learn.org/stable/) provides machine learning
   algorithms using numpy arrays as its primary data format.
 
-- Too many other libraries to discuss.
+- [`dask`](https://dask.org/) provides the same API as numpy, but supports
+  parallell and distributed execution.
