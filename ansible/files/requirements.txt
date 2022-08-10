@@ -28,7 +28,7 @@ jupyterhub==0.8.1
 Mako==1.0.7
 MarkupSafe==1.0
 mistune==0.8.3
-nbconvert==5.3.1
+nbconvert==6.3.0
 nbformat==4.4.0
 notebook==5.4.1
 pamela==0.3.0
