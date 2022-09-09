@@ -24,7 +24,7 @@ Jinja2==2.10
 jsonschema==2.6.0
 jupyter-client==5.2.3
 jupyter-core==4.4.0
-jupyterhub==0.8.1
+jupyterhub==1.5.0
 Mako==1.0.7
 MarkupSafe==1.0
 mistune==0.8.3
