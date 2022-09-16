@@ -25,7 +25,7 @@ jsonschema==2.6.0
 jupyter-client==5.2.3
 jupyter-core==4.4.0
 jupyterhub==0.8.1
-Mako==1.0.7
+Mako==1.2.2
 MarkupSafe==1.0
 mistune==0.8.3
 nbconvert==5.3.1
